@@ -36,4 +36,4 @@ cd ../server && npm install
 Запустите MongoDB (mongod), затем: cd server && npm run dev
 cd ../client && npm run dev
 
-Откройте http://localhost:3000.
+Откройте http://localhost:5173.
