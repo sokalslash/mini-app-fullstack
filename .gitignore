@@ -23,7 +23,6 @@ dist-ssr/
 
 # Docker
 *.dockerignore
-Dockerfile*
 docker-compose*.yml.bak
 
 # MongoDB local data
