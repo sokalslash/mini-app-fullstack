@@ -35,8 +35,18 @@ const FormPage: React.FC = () => {
   };
 
   const validatePhone = (value: string): string | boolean => {
-    const regex = /^(?:\+375|80)\d{9}$/;
-    return regex.test(value) || "Неверный формат (+375... или 80...)";
+    if (!value.startsWith("+375") && !value.startsWith("80")) {
+      return "Неверный формат: номер должен начинаться с префикса региона +375 или 80";
+    }
+
+    const prefix = value.startsWith("+375") ? "+375" : "80";
+    const numberPart = value.slice(prefix.length);
+
+    if (numberPart.length !== 9 || !/^\d{9}$/.test(numberPart)) {
+      return "После префикса региона должны следовать префикс оператора (2 цифры) и 7 цифр номера.";
+    }
+
+    return true;
   };
 
   return (
@@ -70,7 +80,15 @@ const FormPage: React.FC = () => {
               help={errors.phone?.message}
               validateStatus={errors.phone ? "error" : ""}
             >
-              <Input {...field} placeholder="Телефон (+375... или 80...)" />
+              <Input
+                {...field}
+                type="tel"
+                placeholder="Телефон (+375... или 80...)"
+                onChange={(e) => {
+                  const onlyDigits = e.target.value.replace(/[^\d+]/g, "");
+                  field.onChange(onlyDigits);
+                }}
+              />
             </Form.Item>
           )}
         />
